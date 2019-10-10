@@ -1,25 +1,25 @@
 This sample shows how to write properties to be securely stored in your PAS system credhub, and read them in your apps, using the Credhub Service Broker. 
 
-1. - push this sample app
+1. push this sample app
 - mvn package -DskipTests
 - cf push credtest -p target/TestCredhub-0.0.1-SNAPSHOT.jar -b java_buildpack_offline
 
 If the name "credtest" is taken, substitute another one. If you do so, replace "credtest" everywhere below with the name you chose.
 
-2. - write the values into credhub
+2. write the values into credhub
 - cf create-service credhub default mycred -c '{ "password": "aoeuaoeu" }'
 - cf create-service credhub default mycredmulti -c '{ "password": "aoeuaoeu", "username": "blah", "extraval": "onetuhnotuh" }'
 
 This creates two different credential blocks, one that contains just one value and one that contains a few values. These properties are now stored in credhub and are encrypted at rest and while in motion to the container running your app.
 
-3. - bind the values to the apps that need them
+3. bind the values to the apps that need them
 - cf bind-service credtest mycred
 - cf bind-service credtest mycredmulti
 - cf restart credtest
 
 Now the values you wrote into credhub in step 2 are made available to the app or apps you bind them to. Remember to restart the app after binding as the bindings take effect only on app restart.
 
-4. - verify functionality
+4. verify functionality
 - cf logs credtest
 
 Wait a few seconds. Every 5 seconds, this app should print:
